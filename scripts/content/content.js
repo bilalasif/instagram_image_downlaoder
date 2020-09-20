@@ -1,28 +1,22 @@
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+// listners
+const onMessageReceivedByContentScript = function (request, sender, sendResponse) {
   switch (request.action) {
-    case "IS_IMAGE_AVAILABLE_TO_DOWNLOAD": {
+    case chromeActions.IS_IMAGE_AVAILABLE_TO_DOWNLOAD: {
       if (document.querySelector(".zZYga ._9AhH0") !== null) {
-        const msgObject = {
-          action: "IMAGE_IS_AVAILABLE",
-        };
-        chrome.runtime.sendMessage(msgObject);
+        chrome.runtime.sendMessage(createMsgObject(chromeActions.IMAGE_IS_AVAILABLE));
       } else {
-        const msgObject = {
-          action: "IMAGE_IS_NOT_AVAILABLE",
-        };
-        chrome.runtime.sendMessage(msgObject);
+        chrome.runtime.sendMessage(createMsgObject(chromeActions.IMAGE_IS_NOT_AVAILABLE));
       }
       break;
     }
-    case "SEND_IMAGE_URL": {
+    case chromeActions.SEND_IMAGE_URL: {
       const imgUrl = document.querySelector(".zZYga .FFVAD").src;
-      const msgObject = {
-        action: "RECEIVE_IMG_URL",
-        imgUrl,
-      };
-      chrome.runtime.sendMessage(msgObject);
+      chrome.runtime.sendMessage(createMsgObject(chromeActions.RECEIVE_IMG_URL, { imgUrl }));
     }
     default:
       break;
   }
-});
+};
+
+// attachign the listners
+chrome.runtime.onMessage.addListener(onMessageReceivedByContentScript);
