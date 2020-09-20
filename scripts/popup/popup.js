@@ -1,12 +1,12 @@
-function showElement(selector) {
+const showElement = function (selector) {
   document.querySelector(selector).style.display = "block";
 }
 
-function hideElement(selector) {
+const hideElement = function (selector) {
   document.querySelector(selector).style.display = "none";
 }
 
-function sendMessageToContentScript(tabId, message) {
+const sendMessageToContentScript = function (tabId, message) {
   chrome.tabs.sendMessage(tabId, message);
 }
 
@@ -51,12 +51,22 @@ const onDocumentLoad = function () {
           tabId,
           createMsgObject(chromeActions.IS_IMAGE_AVAILABLE_TO_DOWNLOAD)
         );
-      }, 2000)
+      }, 500)
 
     }
   });
 };
 
+const onDownloadButtonClick = function (e) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const tabId = tabs[0].id
+    const imgUrl = document.querySelector('.thumnail-img').src
+    sendMessageToContentScript(tabId, createMsgObject(chromeActions.DOWNLOAD_IMAGE, { imgUrl }))
+  })
+}
+
 // attaching listners
 chrome.runtime.onMessage.addListener(onMessageReceivedByPopup);
 window.addEventListener("load", onDocumentLoad);
+const downloadBtn = document.querySelector('.download-btn')
+downloadBtn.addEventListener("click", onDownloadButtonClick)

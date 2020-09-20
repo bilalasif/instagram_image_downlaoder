@@ -12,6 +12,12 @@ const onMessageReceivedByContentScript = function (request, sender, sendResponse
     case chromeActions.SEND_IMAGE_URL: {
       const imgUrl = document.querySelector(".zZYga .FFVAD").src;
       chrome.runtime.sendMessage(createMsgObject(chromeActions.RECEIVE_IMG_URL, { imgUrl }));
+      break;
+    }
+    case chromeActions.DOWNLOAD_IMAGE: {
+      const imgUrl = request.msgObject.imgUrl;
+      chrome.runtime.sendMessage(createMsgObject(chromeActions.DOWNLOAD_IMAGE, { imgUrl }));
+      break;
     }
     default:
       break;
