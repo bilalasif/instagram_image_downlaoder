@@ -32,10 +32,15 @@ header img {
 /* Download Image Section*/
 
 .content-downloadable {
-    color: #5c3551
+    color: #5c3551;
+    display: none;
 }
 
-.loading-img {
+.loading-container {
+    display: none;
+}
+
+.download-controls-container {
     display: none;
 }
 
@@ -44,7 +49,6 @@ header img {
     grid-template-rows: 3fr 1fr;
     grid-gap: 1em;
     justify-content: center;
-    visibility: hidden;
 }
 
 .thumnail-img {
